@@ -47,8 +47,8 @@ export default {
     };
   },
   mounted() {
-    fetch("fetch("https://2xvatz15uf.execute-api.us-east-1.amazonaws.com/Api/Slot")
-")
+    fetch("https://2xvatz15uf.execute-api.us-east-1.amazonaws.com/Api/Slot")
+
       .then(res => res.json())
       .then(data => {
         const parsed = JSON.parse(data.body);
@@ -66,7 +66,7 @@ export default {
       fetch("https://2xvatz15uf.execute-api.us-east-1.amazonaws.com/Api/Appointments", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ body: JSON.stringify(payload) })
+        body: JSON.stringify(payload)
       })
         .then(res => res.json())
         .then(() => {
