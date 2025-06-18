@@ -1,53 +1,52 @@
 <script>
 export default {
-  name: "AppointmentsList",
+  name: "BookAppointment",
   data() {
     return {
-      appointments: []
+      name: "",
+      symptoms: "",
+      selectedSlot: "",
+      slots: []
     };
   },
   mounted() {
-    this.fetchAppointments();
+    fetch("https://2xvatz15uf.execute-api.us-east-1.amazonaws.com/Api/Slot")
+      .then(res => res.json())
+      .then(data => {
+        const parsed = JSON.parse(data.body);  // if your Lambda returns `{ body: string }`
+        this.slots = parsed.filter(s => !s.isBooked).map(s => s.slot);
+      })
+      .catch(err => {
+        console.error("Error fetching slots:", err);
+        alert("Failed to load available slots.");
+      });
   },
   methods: {
-    // GET /Api/Appointments
-    fetchAppointments() {
-      fetch("https://2xvatz15uf.execute-api.us-east-1.amazonaws.com/Api/Appointments")
-        .then(res => res.json())
-        .then(data => {
-          // If your Lambda returns { body: "json‑string" } keep the next line,
-          // otherwise just use: this.appointments = data;
-          const parsed = JSON.parse(data.body);
-          this.appointments = parsed;
-        })
-        .catch(err => console.error("Failed to load appointments:", err));
-    },
+    submitAppointment() {
+      const payload = {
+        patientName: this.name,
+        symptoms: this.symptoms,
+        slot: this.selectedSlot
+      };
 
-    // PATCH /Api/Appointments/{id}
-    updateStatus(appointment, newStatus) {
-      const url = `https://2xvatz15uf.execute-api.us-east-1.amazonaws.com/Api/Appointments/${appointment.appointmentId}`;
-      const payload = { status: newStatus };
-
-      fetch(url, {
-        method: "PATCH",
+      fetch("https://2xvatz15uf.execute-api.us-east-1.amazonaws.com/Api/Appointments", {
+        method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
+        body: JSON.stringify(payload) // Remove outer { body: ... } unless needed
       })
-        .then(async res => {
-          const rawBody = await res.text();
-          if (!res.ok) throw new Error(`HTTP ${res.status}: ${rawBody}`);
-          return JSON.parse(rawBody);
-        })
+        .then(res => res.json())
         .then(() => {
-          // update UI immediately
-          appointment.status = newStatus;
-          alert("Status updated!");
+          alert("Appointment booked!");
+          this.name = "";
+          this.symptoms = "";
+          this.selectedSlot = "";
         })
         .catch(err => {
-          console.error("Failed to update status:", err);
-          alert("Update failed. See console for details.");
+          console.error("Error booking appointment:", err);
+          alert("Failed to book appointment.");
         });
     }
   }
 };
 </script>
+
