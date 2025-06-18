@@ -59,7 +59,7 @@ export default {
   },
   methods: {
     fetchAppointments() {
-      fetch("https://e2m2b7y8c9.execute-api.us-east-1.amazonaws.com/prod/appointments")
+      fetch("https://2xvatz15uf.execute-api.us-east-1.amazonaws.com/Api/Appointments")
         .then(res => res.json())
         .then(data => {
           const parsed = JSON.parse(data.body);
