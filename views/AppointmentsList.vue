@@ -1,4 +1,3 @@
-
 <template>
   <div>
     <nav class="navbar navbar-light bg-white shadow-sm mb-4">
@@ -64,18 +63,13 @@ export default {
         .then(data => {
           const parsed = JSON.parse(data.body);
           this.appointments = parsed;
+        })
+        .catch(err => {
+          console.error("Failed to fetch appointments:", err);
         });
     },
-    updateStatus(Appointments, newStatus) {
-      // Log the full appointment object and its ID
-      console.log(" appointment (proxy):", Appointments);
-      const cleanAppointment = JSON.parse(JSON.stringify(Appointments));
-      console.log(" Clean appointment:", cleanAppointment);
-      console.log("appointmentId:", cleanAppointment.appointmentId);
-      console.log(" appointmentId (direct):", Appointments.appointmentId);
-
-      const url = `https://2xvatz15uf.execute-api.us-east-1.amazonaws.com/Api/Appointments/${Appointments.appointmentId}`;
-
+    updateStatus(appointment, newStatus) {
+      const url = `https://2xvatz15uf.execute-api.us-east-1.amazonaws.com/Api/Appointments/${appointment.appointmentId}`;
       const payload = { status: newStatus };
 
       fetch(url, {
@@ -85,25 +79,22 @@ export default {
         },
         body: JSON.stringify(payload)
       })
-          .then(async res => {
-
-            const rawBody = await res.text();
-
-            if (!res.ok) {
-              throw new Error(`HTTP ${res.status}: ${rawBody}`);
-            }
-
-            return JSON.parse(rawBody);
-          })
-          .then(() => {
-            alert("Status updated!");
-          })
-          .catch(err => {
-            console.error(" Failed to update status:", err);
-            alert("Update failed. See console for details.");
-          });
+        .then(async res => {
+          const rawBody = await res.text();
+          if (!res.ok) {
+            throw new Error(`HTTP ${res.status}: ${rawBody}`);
+          }
+          return JSON.parse(rawBody);
+        })
+        .then(() => {
+          alert("Status updated!");
+        })
+        .catch(err => {
+          console.error("Failed to update status:", err);
+          alert("Update failed. See console for details.");
+        });
     }
-
-     }
+  }
 };
 </script>
+
