@@ -73,7 +73,7 @@ export default {
       console.log("appointmentId:", cleanAppointment.appointmentId);
       console.log(" appointmentId (direct):", appointment.appointmentId);
 
-      const url = https://2xvatz15uf.execute-api.us-east-1.amazonaws.com/Api/Appointments/${Appointments.appointmentId};
+      const url = `https://2xvatz15uf.execute-api.us-east-1.amazonaws.com/Api/Appointments/${Appointments.appointmentId}`;
 
       const payload = { status: newStatus };
 
