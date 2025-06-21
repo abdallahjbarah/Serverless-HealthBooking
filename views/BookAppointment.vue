@@ -1,4 +1,3 @@
-
 <template>
   <div>
     <nav class="navbar navbar-light bg-white shadow-sm mb-4">
