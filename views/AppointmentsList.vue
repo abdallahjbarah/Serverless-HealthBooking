@@ -1,3 +1,4 @@
+
 <template>
   <div>
     <nav class="navbar navbar-light bg-white shadow-sm mb-4">
@@ -89,7 +90,7 @@ export default {
             const rawBody = await res.text();
 
             if (!res.ok) {
-              throw new Error(HTTP ${res.status}: ${rawBody});
+              throw new Error(`HTTP ${res.status}: ${rawBody}`);
             }
 
             return JSON.parse(rawBody);
