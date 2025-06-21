@@ -66,13 +66,13 @@ export default {
           this.appointments = parsed;
         });
     },
-    updateStatus(appointment, newStatus) {
+    updateStatus(Appointments, newStatus) {
       // Log the full appointment object and its ID
-      console.log(" appointment (proxy):", appointment);
-      const cleanAppointment = JSON.parse(JSON.stringify(appointment));
+      console.log(" appointment (proxy):", Appointments);
+      const cleanAppointment = JSON.parse(JSON.stringify(Appointments));
       console.log(" Clean appointment:", cleanAppointment);
       console.log("appointmentId:", cleanAppointment.appointmentId);
-      console.log(" appointmentId (direct):", appointment.appointmentId);
+      console.log(" appointmentId (direct):", Appointments.appointmentId);
 
       const url = `https://2xvatz15uf.execute-api.us-east-1.amazonaws.com/Api/Appointments/${Appointments.appointmentId}`;
 
